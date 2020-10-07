@@ -4,7 +4,7 @@ class CreateEntries < ActiveRecord::Migration[6.0]
       t.text :content
       t.integer :user_id
       t.datetime :date
-      t.string :word
+      t.integer :word_id
 
       t.timestamps
     end
