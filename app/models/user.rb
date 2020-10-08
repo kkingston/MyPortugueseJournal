@@ -1,4 +1,9 @@
 class User < ApplicationRecord
-  has_many :words
-  has_many :entries, through: :words
+  has_many :words, through: :entries
+  has_many :entries, dependent: :destroy
+
+  has_secure_password
+
+  validates :username, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true
 end
