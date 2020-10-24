@@ -1,7 +1,7 @@
 
   class Api::V1::UsersController < ApplicationController
     #authorize user AFTER they're created!!
-    skip_before_action :authorized, only: [:create]
+    skip_before_action :authorized, only: [:create, :index]
     before_action :set_user, only: [:show, :update, :destroy]
 
     # GET /users
@@ -22,7 +22,7 @@
         @token = encode_token(user_id: @user.id) #user_id is the payload.. see ApplicationController
         render json: {user: UserSerializer.new(@user), jwt: @token}, status: :created #, location: v1_user_url@(user)
       else
-        render json: @user.errors, status: :unprocessable_entity #{ error: 'failed to create user'}, status: :not_acceptable
+        render json: {error: 'failed to create user'}, status: :not_acceptable #{ error: 'failed to create user'}, status: :not_acceptable
       end
     end
 

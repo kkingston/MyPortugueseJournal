@@ -1,10 +1,12 @@
 class Api::V1::EntriesController < ApplicationController
     before_action :set_entry, only: [:show, :update, :destroy]
+    skip_before_action :authorized, only: [:create, :index
+]
 
     # GET /entries
     def index
       @entries = Entry.all
-      render json: @entries, :include => :word
+      render json: @entries, :include => [:word, :user]
       
     end
 
@@ -15,10 +17,12 @@ class Api::V1::EntriesController < ApplicationController
 
     # POST /entries
     def create
-      @entry = Entry.create(entry_params)
-
+      @entry = Entry.new(entry_params)
+      @entry.user = current_user
+      # user_id = decode_token[0]['user_id'] #JWTdecode => [{'user_id' => 1}, {'alg'=> 'HS256'}]
+      # @entry.user = User.find_by(id: user_id)
       if @entry.save
-        render json: @entry, status: :created, location: @entry
+        render json: @entry, :include => [:word]
       else
         render json: @entry.errors, status: :unprocessable_entity
       end
@@ -46,7 +50,7 @@ class Api::V1::EntriesController < ApplicationController
 
       # Only allow a trusted parameter "white list" through.
       def entry_params
-        params.require(:entry).permit(:content, :user_id, :word_id, :date)
+        params.require(:entry).permit(:content, :word_id, :date)
       end
 
   end

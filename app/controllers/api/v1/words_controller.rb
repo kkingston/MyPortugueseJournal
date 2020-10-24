@@ -1,6 +1,6 @@
 
   class Api::V1::WordsController < ApplicationController
-
+    skip_before_action :authorized, only: [:create, :index]
     before_action :set_word, only: [:show, :update, :destroy]
 
     # GET /words
@@ -47,5 +47,6 @@
       # Only allow a trusted parameter "white list" through.
       def word_params
         params.require(:word).permit(:word, :definition, :pos)
+      end
 
   end

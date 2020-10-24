@@ -28,9 +28,10 @@ class ApplicationController < ActionController::API
   end  
 
   #Authentication helper methods:
+  private
   def current_user
     if decode_token
-      user_id = decoded_token[0]['user_id'] #JWTdecode => [{'user_id' => 1}, {'alg'=> 'HS256'}]
+      user_id = decode_token[0]['user_id'] #JWTdecode => [{'user_id' => 1}, {'alg'=> 'HS256'}]
       @user = User.find_by(id: user_id)
     end
   end
