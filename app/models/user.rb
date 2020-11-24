@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :words, through: :entries
   has_many :entries, dependent: :destroy
+  has_many :comments, through: :entries
 
   has_secure_password
 
