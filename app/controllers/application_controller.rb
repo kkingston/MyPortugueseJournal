@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
+  include ::ActionController::Cookies
   #A method to authorize that user is okay before anything else is ran. Keeps app locked essencially.
-  before_action :authorized
+  # before_action :authorized
 
   #Encode/Decode our token
   #JWT.encode needs 3 arguments: payload to encode, app secret, and one (optional) for the hashing algorithm.
@@ -29,11 +30,15 @@ class ApplicationController < ActionController::API
 
   #Authentication helper methods:
   private
+  # def current_user
+  #   if decode_token
+  #     user_id = decode_token[0]['user_id'] #JWTdecode => [{'user_id' => 1}, {'alg'=> 'HS256'}]
+  #     @user = User.find_by(id: user_id)
+  #   end
+  # end
+
   def current_user
-    if decode_token
-      user_id = decode_token[0]['user_id'] #JWTdecode => [{'user_id' => 1}, {'alg'=> 'HS256'}]
-      @user = User.find_by(id: user_id)
-    end
+    User.find_by(id: session[:user_id])
   end
 
   def logged_in?

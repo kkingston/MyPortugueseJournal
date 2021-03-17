@@ -1,7 +1,7 @@
 
   class Api::V1::WordsController < ApplicationController
-    skip_before_action :authorized, only: [:create, :index]
-    before_action :set_word, only: [:show, :update, :destroy]
+    # skip_before_action :authorized, only: [:create, :index]
+    # before_action :set_word, only: [:show, :update, :destroy]
 
     # GET /words
     def index
